@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cemetery Management System | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/login.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <i class="fas fa-landmark"></i>
+                <h1>Cemetery Management System</h1>
+                <p>Sign in to access the admin dashboard</p>
+            </div>
+
+            <div id="alert" class="alert"></div>
+
+            <form id="loginForm">
+                <div class="input-field">
+                    <label for="username">Username</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" placeholder="Enter your username" value="Admin@cemetery.com" autocomplete="username" required>
+                    </div>
+                    <div class="error-message" id="usernameError"></div>
+                </div>
+
+                <div class="input-field">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required>
+                        <span class="toggle-password" onclick="togglePassword('password')">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <div class="input-field">
+                    <label for="role">Role</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user-tag"></i>
+                        <select id="role" required>
+                            <option value="staff">Staff</option>
+                            <option value="admin">Administrator</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-signin">
+                    <span>Sign In</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="register-link">
+                <p>Don't have an account? <a href="register.html">Register new account</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/js/login.js"></script>
+    <script>
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = document.querySelector('.toggle-password i');
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>
