@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lot Management | Cemetery System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/lot-management.css">
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-container">
+        <!-- SIDEBAR (static, same as admin dashboard) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand"><i class="fas fa-tree"></i> <span>Cemetery Management System</span></div>
+            </div>
+            <div class="sidebar-nav">
+                <a href="dashboard_admin.html" class="nav-item"><span class="icon">📊</span> <span>Dashboard</span></a>
+                <a href="lot-management.html" class="nav-item active"><span class="icon">🗺️</span> <span>Lot Management</span></a>
+                <a href="#" class="nav-item" data-page="deceased-records"><span class="icon">📜</span> <span>Decedent Records</span></a>
+                <a href="#" class="nav-item" data-page="burial-scheduling"><span class="icon">📅</span> <span>Burial Scheduling</span></a>
+                <a href="#" class="nav-item" data-page="cremation-management"><span class="icon">🔥</span> <span>Cremation Management</span></a>
+                <a href="#" class="nav-item" data-page="relocation-management"><span class="icon">🔄</span> <span>Relocation Management</span></a>
+                <a href="#" class="nav-item" data-page="expiration-monitoring"><span class="icon">⏰</span> <span>Expiration Monitoring</span></a>
+                <a href="#" class="nav-item" data-page="payments"><span class="icon">💰</span> <span>Payment Recording</span></a>
+                <a href="#" class="nav-item" data-page="forecast"><span class="icon">📈</span> <span>Capacity Forecasting</span></a>
+                <a href="#" class="nav-item" data-page="reports"><span class="icon">📄</span> <span>Reports</span></a>
+                <a href="#" class="nav-item" data-page="notifications"><span class="icon">🔔</span> <span>Notifications</span></a>
+                <a href="#" class="nav-item admin-only" data-page="user-management"><span class="icon">👥</span> <span>User Management</span></a>
+                <a href="#" class="nav-item admin-only" data-page="ai"><span class="icon">🤖</span> <span>AI Configuration</span></a>
+                <a href="#" class="nav-item admin-only" data-page="audit"><span class="icon">📋</span> <span>Audit Logs</span></a>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-chip">
+                    <i class="fas fa-user-circle"></i>
+                    <div><span id="sidebarUserName">Admin User</span><small id="sidebarUserRole">Administrator</small></div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="top-bar">
+                <div class="top-left">
+                    <button class="hamburger" id="toggleSidebar"><i class="fas fa-bars"></i></button>
+                    <h3>Lot Management</h3>
+                </div>
+                <div class="user-info">
+                    <div class="profile">
+                        <img id="userAvatar" src="" alt="avatar">
+                        <div class="profile-text">
+                            <div class="user-name" id="userName">Admin User</div>
+                            <div class="user-role" id="userRole">Administrator</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+            <div class="content-area">
+                <div class="stats-row">
+                    <div class="stat-card"><div class="stat-title"><i class="fas fa-check-circle"></i> Available</div><div class="stat-value" id="availableCount">0</div><div class="stat-sub">Lots ready</div></div>
+                    <div class="stat-card"><div class="stat-title"><i class="fas fa-bed"></i> Occupied</div><div class="stat-value" id="occupiedCount">0</div><div class="stat-sub">Currently occupied</div></div>
+                    <div class="stat-card"><div class="stat-title"><i class="fas fa-clock"></i> Reserved</div><div class="stat-value" id="reservedCount">0</div><div class="stat-sub">Pending burial</div></div>
+                    <div class="stat-card"><div class="stat-title"><i class="fas fa-chart-simple"></i> Total Lots</div><div class="stat-value" id="totalCount">0</div><div class="stat-sub">All lots</div></div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                    <button class="btn-add-lot" id="openAddLotModal"><i class="fas fa-plus"></i> Add New Lot</button>
+                </div>
+                <div class="section-tabs" id="sectionTabs"></div>
+                <div id="lotGrid" class="lot-grid"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals same as before -->
+    <div id="lotModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modalTitle">Add New Lot</h3>
+            <form id="lotForm">
+                <input type="hidden" id="lotId">
+                <div class="form-group"><label>Lot Number</label><input type="text" id="lotNumber" required></div>
+                <div class="form-group"><label>Section</label><select id="lotSection" required><option value="Section A">Section A</option><option value="Section B">Section B</option><option value="Section C">Section C</option><option value="Section D">Section D</option></select></div>
+                <div class="form-group"><label>Block (optional)</label><input type="text" id="lotBlock"></div>
+                <div class="form-group"><label>Lot Type</label><select id="lotType" required><option value="Lawn Lot">Lawn Lot</option><option value="Family Lot">Family Lot</option><option value="Mausoleum">Mausoleum</option><option value="Cremation Niche">Cremation Niche</option></select></div>
+                <div class="form-group"><label>Price ($)</label><input type="number" id="lotPrice" required></div>
+                <div class="form-group"><label>Status</label><select id="lotStatus"><option value="Available">Available</option><option value="Occupied">Occupied</option><option value="Reserved">Reserved</option><option value="Expired">Expired</option></select></div>
+                <div class="form-group"><label>Notes</label><textarea id="lotNotes" rows="2"></textarea></div>
+                <button type="submit" class="btn-save">Save Lot</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <span class="close-view">&times;</span>
+            <h3>Lot Details</h3>
+            <div id="viewDetails"></div>
+            <button class="btn-edit" id="editFromView">Edit Lot</button>
+        </div>
+    </div>
+
+    <script src="../assets/js/lot-management.js"></script>
+</body>
+</html>

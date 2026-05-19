@@ -1,119 +1,116 @@
-// js/dashboard_staff.js
+// dashboard_staff.js
 document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.querySelector('.sidebar');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
+    }
+
+    fetch('../assets/includes/sidebar-staff.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('sidebarContainer').innerHTML = html;
+            const currentPage = window.location.pathname.split('/').pop();
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+            if (toggleBtn && sidebar) {
+                toggleBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
+            }
+        })
+        .catch(err => console.error('Sidebar load error:', err));
+
     const session = JSON.parse(localStorage.getItem('cemetery_session')) || null;
     if (!session) {
         window.location.href = 'login.html';
         return;
     }
-    // enforce staff-only access for this page
     if (session.role !== 'staff') {
-        // redirect admin to admin dashboard
         window.location.href = 'dashboard_admin.html';
         return;
     }
 
-    // populate header user info
     document.getElementById('userName').textContent = session.fullName || session.username;
-    const roleSpan = document.getElementById('userRole');
-    roleSpan.textContent = (session.role || 'STAFF').toUpperCase();
+    document.getElementById('userRole').textContent = (session.role || 'STAFF').toUpperCase();
 
-    // hide admin-only nav for non-admin (staff)
-    if (session.role !== 'admin') {
-        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-    }
-
-    // hide nav items based on fine-grained permissions (data-perm)
     const perms = session.permissions || [];
     document.querySelectorAll('.nav-item').forEach(el => {
         const perm = el.getAttribute('data-perm');
-        if (perm && !perms.includes(perm)) {
-            el.style.display = 'none';
-        }
+        if (perm && !perms.includes(perm)) el.style.display = 'none';
     });
 
-    // sidebar toggling
-    document.getElementById('toggleSidebar')?.addEventListener('click', function(){
-        document.querySelector('.sidebar').classList.toggle('collapsed');
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+        localStorage.removeItem('cemetery_session');
+        window.location.href = 'login.html';
     });
 
-    async function loadModule(page){
-        if(!page) page = 'dashboard';
-        if(page === 'dashboard'){
+    async function loadModule(page) {
+        if (!page || page === 'dashboard') {
             renderStats(); renderAvailability(); renderAISuggestion(); renderChart(); renderRecent();
             document.getElementById('pageTitle').textContent = 'Staff Dashboard';
             return;
         }
-        // role/permission guard using data-perm mapping
         const adminOnly = ['user-management','audit','ai'];
-        if(adminOnly.includes(page) && session.role !== 'admin'){
+        if (adminOnly.includes(page) && session.role !== 'admin') {
             document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Access denied</h3><p>This module is for administrators only.</p></div>`;
             document.getElementById('pageTitle').textContent = 'Access Denied';
             return;
         }
         const navEl = document.querySelector(`.nav-item[data-page="${page}"]`);
-        if(navEl){
+        if (navEl) {
             const requiredPerm = navEl.getAttribute('data-perm');
-            if(requiredPerm && !perms.includes(requiredPerm)){
+            if (requiredPerm && !perms.includes(requiredPerm)) {
                 document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Access denied</h3><p>You do not have permission to view this module.</p></div>`;
                 document.getElementById('pageTitle').textContent = 'Access Denied';
                 return;
             }
         }
         document.getElementById('pageTitle').textContent = page.replace(/-/g,' ').replace(/\b\w/g, c=>c.toUpperCase());
-        try{
+        try {
             const r = await fetch(`modules/${page}.html`);
-            if(!r.ok) throw new Error('not found');
+            if (!r.ok) throw new Error('not found');
             const html = await r.text();
             document.getElementById('contentArea').innerHTML = html;
-
             const cssId = 'module-css';
             const oldCss = document.getElementById(cssId);
-            if(oldCss) oldCss.remove();
+            if (oldCss) oldCss.remove();
             const link = document.createElement('link');
             link.id = cssId;
             link.rel = 'stylesheet';
             link.href = `../assets/css/modules/${page}.css`;
             document.head.appendChild(link);
-
             const jsId = 'module-js';
             const oldJs = document.getElementById(jsId);
-            if(oldJs) oldJs.remove();
+            if (oldJs) oldJs.remove();
             const script = document.createElement('script');
             script.id = jsId;
             script.src = `../assets/js/modules/${page}.js`;
             script.defer = true;
             document.body.appendChild(script);
-
-            window.apiFetch = function(path, opts){
-                opts = opts || {};
-                opts.headers = opts.headers || {};
-                if(session.apiToken) opts.headers['Authorization'] = 'Bearer ' + session.apiToken;
-                return fetch(path, opts);
-            }
-
-        }catch(err){
+        } catch(err) {
             document.getElementById('contentArea').innerHTML = `<div class="card"><h3>${page}</h3><p>Module not implemented yet.</p></div>`;
         }
     }
 
     document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href && href !== '#') return;
+            e.preventDefault();
+            const page = this.getAttribute('data-page');
+            if (!page) return;
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             this.classList.add('active');
-            const page = this.getAttribute('data-page');
             loadModule(page);
         });
     });
 
     loadModule('dashboard');
 
-    document.getElementById('logoutBtn')?.addEventListener('click', function() {
-        localStorage.removeItem('cemetery_session');
-        window.location.href = 'login.html';
-    });
-
-    function seedDemoData(){
-        if(!localStorage.getItem('lots')){
+    function seedDemoData() {
+        if (!localStorage.getItem('lots')) {
             const lots = [];
             const sections = ['Section A','Section B','Section C','Section D'];
             let id = 1;
@@ -125,14 +122,14 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             localStorage.setItem('lots', JSON.stringify(lots));
         }
-        if(!localStorage.getItem('burial_schedules')){
+        if (!localStorage.getItem('burial_schedules')) {
             const schedules = [];
             for(let i=0;i<8;i++){
                 schedules.push({ schedule_id: i+1, lot_id: i+1, deceased_name: `Person ${i+1}`, schedule_date: new Date(Date.now() + i*86400000).toISOString().slice(0,10), status: 'Confirmed' });
             }
             localStorage.setItem('burial_schedules', JSON.stringify(schedules));
         }
-        if(!localStorage.getItem('payments')){
+        if (!localStorage.getItem('payments')) {
             const payments = [
                 { payment_id:1, reference_id:101, amount:4500, payment_date: new Date().toISOString().slice(0,10), payment_method:'Cash', receipt_number:'R-1001' },
                 { payment_id:2, reference_id:102, amount:8000, payment_date: new Date().toISOString().slice(0,10), payment_method:'Card', receipt_number:'R-1002' }
@@ -140,17 +137,14 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('payments', JSON.stringify(payments));
         }
     }
-
     seedDemoData();
 
     function renderStats(){
         const lots = JSON.parse(localStorage.getItem('lots')||'[]');
-        const schedules = JSON.parse(localStorage.getItem('burial_schedules')||'[]');
-        const payments = JSON.parse(localStorage.getItem('payments')||'[]');
         const total = lots.filter(l=>l.status==='Occupied').length;
         const available = lots.filter(l=>l.status==='Available').length;
+        const payments = JSON.parse(localStorage.getItem('payments')||'[]');
         const revenue = payments.reduce((s,p)=>s + (p.amount||0),0);
-
         document.getElementById('statTotal').textContent = total;
         document.getElementById('statAvailable').textContent = available;
         document.getElementById('statRevenue').textContent = `₱ ${revenue.toLocaleString()}`;
@@ -211,5 +205,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     renderStats(); renderAvailability(); renderAISuggestion(); renderChart(); renderRecent();
-
 });

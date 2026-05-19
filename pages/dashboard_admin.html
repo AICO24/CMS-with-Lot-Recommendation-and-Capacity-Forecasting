@@ -11,27 +11,35 @@
 </head>
 <body class="dashboard-body">
     <div class="dashboard-container">
+        <!-- SIDEBAR (static, no fetch) -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="brand"><i class="fas fa-tree"></i> <span>Cemetery Management System</span></div>
             </div>
             <div class="sidebar-nav">
-                <div class="nav-item active" data-page="dashboard"><span class="icon">📊</span> <span>Dashboard</span></div>
-                <div class="nav-item admin-only" data-page="user-management" data-perm="users.manage"><span class="icon">👥</span> <span>User Management</span></div>
-                <div class="nav-item" data-page="lot-config" data-perm="lots.manage"><span class="icon">🗺️</span> <span>Lot Management</span></div>
-                <div class="nav-item" data-page="deceased" data-perm="decedents.manage"><span class="icon">📜</span> <span>Decedent Records</span></div>
-                <div class="nav-item" data-page="scheduling" data-perm="schedules.manage"><span class="icon">📅</span> <span>Burial Scheduling</span></div>
-                <div class="nav-item" data-page="cremation" data-perm="cremation.manage"><span class="icon">🔥</span> <span>Cremation Management</span></div>
-                <div class="nav-item" data-page="relocation" data-perm="relocation.manage"><span class="icon">🔄</span> <span>Relocation Management</span></div>
-                <div class="nav-item" data-page="expiration" data-perm="expiration.view"><span class="icon">⏰</span> <span>Expiration Monitoring</span></div>
-                <div class="nav-item" data-page="payments" data-perm="payments.manage"><span class="icon">💰</span> <span>Payment Recording</span></div>
-                <div class="nav-item admin-only" data-page="ai" data-perm="ai.manage"><span class="icon">🤖</span> <span>AI Configuration</span></div>
-                <div class="nav-item" data-page="forecast" data-perm="forecast.view"><span class="icon">📈</span> <span>Capacity Forecasting</span></div>
-                <div class="nav-item" data-page="reports" data-perm="reports.view"><span class="icon">📄</span> <span>Reports</span></div>
-                <div class="nav-item" data-page="notifications" data-perm="notifications.view"><span class="icon">🔔</span> <span>Notifications</span></div>
-                <div class="nav-item admin-only" data-page="audit" data-perm="audit.view"><span class="icon">📋</span> <span>Audit Logs</span></div>
+                <a href="dashboard_admin.html" class="nav-item active"><span class="icon">📊</span> <span>Dashboard</span></a>
+                <a href="lot-management.html" class="nav-item"><span class="icon">🗺️</span> <span>Lot Management</span></a>
+                <a href="#" class="nav-item" data-page="deceased-records"><span class="icon">📜</span> <span>Decedent Records</span></a>
+                <a href="#" class="nav-item" data-page="burial-scheduling"><span class="icon">📅</span> <span>Burial Scheduling</span></a>
+                <a href="#" class="nav-item" data-page="cremation-management"><span class="icon">🔥</span> <span>Cremation Management</span></a>
+                <a href="#" class="nav-item" data-page="relocation-management"><span class="icon">🔄</span> <span>Relocation Management</span></a>
+                <a href="#" class="nav-item" data-page="expiration-monitoring"><span class="icon">⏰</span> <span>Expiration Monitoring</span></a>
+                <a href="#" class="nav-item" data-page="payments"><span class="icon">💰</span> <span>Payment Recording</span></a>
+                <a href="#" class="nav-item" data-page="forecast"><span class="icon">📈</span> <span>Capacity Forecasting</span></a>
+                <a href="#" class="nav-item" data-page="reports"><span class="icon">📄</span> <span>Reports</span></a>
+                <a href="#" class="nav-item" data-page="notifications"><span class="icon">🔔</span> <span>Notifications</span></a>
+                <a href="#" class="nav-item admin-only" data-page="user-management"><span class="icon">👥</span> <span>User Management</span></a>
+                <a href="#" class="nav-item admin-only" data-page="ai"><span class="icon">🤖</span> <span>AI Configuration</span></a>
+                <a href="#" class="nav-item admin-only" data-page="audit"><span class="icon">📋</span> <span>Audit Logs</span></a>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-chip">
+                    <i class="fas fa-user-circle"></i>
+                    <div><span id="sidebarUserName">Admin User</span><small id="sidebarUserRole">Administrator</small></div>
+                </div>
             </div>
         </aside>
+
         <main class="main-content">
             <div class="top-bar">
                 <div class="top-left">
@@ -50,52 +58,20 @@
                 </div>
             </div>
             <div class="content-area" id="contentArea">
-                <!-- Reuse existing dashboard content (stat cards, map, AI suggestion, charts) -->
+                <!-- same dashboard widgets as before -->
                 <div class="stats-row">
-                    <div class="stat-card">
-                        <div class="stat-title">Total Occupancy</div>
-                        <div class="stat-value" id="statTotal">-</div>
-                        <div class="stat-sub">Lots occupied</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">Available Lots</div>
-                        <div class="stat-value" id="statAvailable">-</div>
-                        <div class="stat-sub">Ready for assignment</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">Monthly Revenue</div>
-                        <div class="stat-value" id="statRevenue">-</div>
-                        <div class="stat-sub">This month</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">Predicted Capacity</div>
-                        <div class="stat-value" id="statForecast">-</div>
-                        <div class="stat-sub">Next quarter forecast</div>
-                    </div>
+                    <div class="stat-card"><div class="stat-title">Total Occupancy</div><div class="stat-value" id="statTotal">-</div><div class="stat-sub">Lots occupied</div></div>
+                    <div class="stat-card"><div class="stat-title">Available Lots</div><div class="stat-value" id="statAvailable">-</div><div class="stat-sub">Ready for assignment</div></div>
+                    <div class="stat-card"><div class="stat-title">Monthly Revenue</div><div class="stat-value" id="statRevenue">-</div><div class="stat-sub">This month</div></div>
+                    <div class="stat-card"><div class="stat-title">Predicted Capacity</div><div class="stat-value" id="statForecast">-</div><div class="stat-sub">Next quarter forecast</div></div>
                 </div>
-
                 <div class="mid-row">
-                    <div class="card availability">
-                        <h4>Real-time Availability Map</h4>
-                        <div class="availability-map" id="availabilityMap"></div>
-                    </div>
-                    <div class="card ai-suggest">
-                        <h4>AI Quick Suggestion</h4>
-                        <div id="aiSuggestion">
-                            <p class="muted">Based on current demand patterns, we recommend:</p>
-                            <div class="ai-box"><strong id="aiLot">Lot B-156</strong><div class="ai-progress"><div id="aiProgressBar"></div></div><div class="muted small" id="aiNote">High suitability for upcoming reservations</div></div>
-                        </div>
-                    </div>
+                    <div class="card availability"><h4>Real-time Availability Map</h4><div class="availability-map" id="availabilityMap"></div></div>
+                    <div class="card ai-suggest"><h4>AI Quick Suggestion</h4><div id="aiSuggestion"><p class="muted">Based on current demand patterns, we recommend:</p><div class="ai-box"><strong id="aiLot">Lot B-156</strong><div class="ai-progress"><div id="aiProgressBar"></div></div><div class="muted small" id="aiNote">High suitability for upcoming reservations</div></div></div></div>
                 </div>
-
                 <div class="bottom-row">
-                    <div class="card chart-card">
-                        <canvas id="occChart" height="160"></canvas>
-                    </div>
-                    <div class="card transactions">
-                        <h4>Recent Transactions</h4>
-                        <ul id="recentList" class="recent-list"></ul>
-                    </div>
+                    <div class="card chart-card"><canvas id="occChart" height="160"></canvas></div>
+                    <div class="card transactions"><h4>Recent Transactions</h4><ul id="recentList" class="recent-list"></ul></div>
                 </div>
             </div>
         </main>

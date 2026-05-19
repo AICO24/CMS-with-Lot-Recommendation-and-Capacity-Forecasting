@@ -25,6 +25,7 @@
 .brand i { background:#fff; color:#2b3658; padding:8px; border-radius:8px; }
 
 .sidebar-nav { padding: 12px; }
+.nav-item, .nav-item * { text-decoration: none !important; }
 .nav-item { padding:12px 14px; display:flex; gap:12px; align-items:center; color:#d6def3; border-radius:10px; margin:8px 4px; cursor:pointer; transition:all 0.16s ease; }
 .nav-item .icon { font-size:1.05rem; }
 .nav-item:hover { background: rgba(255,255,255,0.03); transform:translateX(4px); color:#fff; }
