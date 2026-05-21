@@ -11,7 +11,7 @@
 </head>
 <body class="dashboard-body">
     <div class="dashboard-container">
-        <!-- SIDEBAR (static, same as admin dashboard) -->
+        <!-- STATIC SIDEBAR (same as admin dashboard) -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="brand"><i class="fas fa-tree"></i> <span>Cemetery Management System</span></div>
@@ -19,15 +19,14 @@
             <div class="sidebar-nav">
                 <a href="dashboard_admin.html" class="nav-item"><span class="icon">📊</span> <span>Dashboard</span></a>
                 <a href="lot-management.html" class="nav-item active"><span class="icon">🗺️</span> <span>Lot Management</span></a>
-                <a href="#" class="nav-item" data-page="deceased-records"><span class="icon">📜</span> <span>Decedent Records</span></a>
-                <a href="#" class="nav-item" data-page="burial-scheduling"><span class="icon">📅</span> <span>Burial Scheduling</span></a>
+                <a href="decedent-records.html" class="nav-item"><span class="icon">📜</span> <span>Decedent Records</span></a>
+                <a href="burial-scheduling.html" class="nav-item"><span class="icon">📅</span> <span>Burial Scheduling</span></a>
                 <a href="#" class="nav-item" data-page="cremation-management"><span class="icon">🔥</span> <span>Cremation Management</span></a>
                 <a href="#" class="nav-item" data-page="relocation-management"><span class="icon">🔄</span> <span>Relocation Management</span></a>
                 <a href="#" class="nav-item" data-page="expiration-monitoring"><span class="icon">⏰</span> <span>Expiration Monitoring</span></a>
                 <a href="#" class="nav-item" data-page="payments"><span class="icon">💰</span> <span>Payment Recording</span></a>
                 <a href="#" class="nav-item" data-page="forecast"><span class="icon">📈</span> <span>Capacity Forecasting</span></a>
                 <a href="#" class="nav-item" data-page="reports"><span class="icon">📄</span> <span>Reports</span></a>
-                <a href="#" class="nav-item" data-page="notifications"><span class="icon">🔔</span> <span>Notifications</span></a>
                 <a href="#" class="nav-item admin-only" data-page="user-management"><span class="icon">👥</span> <span>User Management</span></a>
                 <a href="#" class="nav-item admin-only" data-page="ai"><span class="icon">🤖</span> <span>AI Configuration</span></a>
                 <a href="#" class="nav-item admin-only" data-page="audit"><span class="icon">📋</span> <span>Audit Logs</span></a>
@@ -48,7 +47,11 @@
                 </div>
                 <div class="user-info">
                     <div class="profile">
-                        <img id="userAvatar" src="" alt="avatar">
+                    <div class="notification-icon" id="notificationIcon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationBadge">3</span>
+                    </div>
+                        <div class="profile-avatar" id="userAvatar"><i class="fas fa-user-tie"></i></div>
                         <div class="profile-text">
                             <div class="user-name" id="userName">Admin User</div>
                             <div class="user-role" id="userRole">Administrator</div>
@@ -57,13 +60,17 @@
                     <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
                 </div>
             </div>
+
             <div class="content-area">
+                <!-- Stats row -->
                 <div class="stats-row">
                     <div class="stat-card"><div class="stat-title"><i class="fas fa-check-circle"></i> Available</div><div class="stat-value" id="availableCount">0</div><div class="stat-sub">Lots ready</div></div>
                     <div class="stat-card"><div class="stat-title"><i class="fas fa-bed"></i> Occupied</div><div class="stat-value" id="occupiedCount">0</div><div class="stat-sub">Currently occupied</div></div>
                     <div class="stat-card"><div class="stat-title"><i class="fas fa-clock"></i> Reserved</div><div class="stat-value" id="reservedCount">0</div><div class="stat-sub">Pending burial</div></div>
                     <div class="stat-card"><div class="stat-title"><i class="fas fa-chart-simple"></i> Total Lots</div><div class="stat-value" id="totalCount">0</div><div class="stat-sub">All lots</div></div>
                 </div>
+
+                <!-- Add button and section tabs -->
                 <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
                     <button class="btn-add-lot" id="openAddLotModal"><i class="fas fa-plus"></i> Add New Lot</button>
                 </div>
@@ -73,7 +80,7 @@
         </main>
     </div>
 
-    <!-- Modals same as before -->
+    <!-- Add/Edit Modal -->
     <div id="lotModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -92,6 +99,7 @@
         </div>
     </div>
 
+    <!-- View Modal -->
     <div id="viewModal" class="modal">
         <div class="modal-content">
             <span class="close-view">&times;</span>
@@ -102,5 +110,13 @@
     </div>
 
     <script src="../assets/js/lot-management.js"></script>
+    <script>
+        // Sidebar toggle
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const sidebar = document.querySelector('.sidebar');
+        if (toggleBtn && sidebar) {
+            toggleBtn.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
+        }
+    </script>
 </body>
 </html>

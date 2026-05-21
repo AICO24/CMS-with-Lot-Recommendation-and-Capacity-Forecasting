@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burial Scheduling (AI) | Cemetery Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/burial-scheduling.css">
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-container">
+        <!-- STATIC SIDEBAR (same as admin dashboard) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand"><i class="fas fa-tree"></i> <span>Cemetery Management System</span></div>
+            </div>
+            <div class="sidebar-nav">
+                <a href="dashboard_admin.html" class="nav-item"><span class="icon">📊</span> <span>Dashboard</span></a>
+                <a href="lot-management.html" class="nav-item"><span class="icon">🗺️</span> <span>Lot Management</span></a>
+                <a href="decedent-records.html" class="nav-item"><span class="icon">📜</span> <span>Decedent Records</span></a>
+                <a href="burial-scheduling.html" class="nav-item active"><span class="icon">📅</span> <span>Burial Scheduling</span></a>
+                <a href="#" class="nav-item" data-page="cremation-management"><span class="icon">🔥</span> <span>Cremation Management</span></a>
+                <a href="#" class="nav-item" data-page="relocation-management"><span class="icon">🔄</span> <span>Relocation Management</span></a>
+                <a href="#" class="nav-item" data-page="expiration-monitoring"><span class="icon">⏰</span> <span>Expiration Monitoring</span></a>
+                <a href="#" class="nav-item" data-page="payments"><span class="icon">💰</span> <span>Payment Recording</span></a>
+                <a href="#" class="nav-item" data-page="forecast"><span class="icon">📈</span> <span>Capacity Forecasting</span></a>
+                <a href="#" class="nav-item" data-page="reports"><span class="icon">📄</span> <span>Reports</span></a>
+                <a href="#" class="nav-item admin-only" data-page="user-management"><span class="icon">👥</span> <span>User Management</span></a>
+                <a href="#" class="nav-item admin-only" data-page="ai"><span class="icon">🤖</span> <span>AI Configuration</span></a>
+                <a href="#" class="nav-item admin-only" data-page="audit"><span class="icon">📋</span> <span>Audit Logs</span></a>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-chip">
+                    <i class="fas fa-user-circle"></i>
+                    <div><span id="sidebarUserName">Admin User</span><small id="sidebarUserRole">Administrator</small></div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="top-bar">
+                <div class="top-left">
+                    <button class="hamburger" id="toggleSidebar"><i class="fas fa-bars"></i></button>
+                    <h3 id="pageTitle">Burial Scheduling (AI)</h3>
+                </div>
+                <div class="user-info">
+                    <div class="profile">
+                        <div class="notification-icon" id="notificationIcon">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge" id="notificationBadge">3</span>
+                        </div>
+                        <div class="profile-avatar" id="userAvatar"><i class="fas fa-user-tie"></i></div>
+                        <div class="profile-text">
+                            <div class="user-name" id="userName">Admin User</div>
+                            <div class="user-role" id="userRole">Administrator</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <!-- Multi-step wizard -->
+                <div class="wizard-container">
+                    <!-- Step indicators -->
+                    <div class="steps">
+                        <div class="step active" data-step="1"><span class="step-num">1</span> Preferences</div>
+                        <div class="step" data-step="2"><span class="step-num">2</span> AI Recommendations</div>
+                        <div class="step" data-step="3"><span class="step-num">3</span> Confirmation</div>
+                    </div>
+
+                    <!-- Step 1: Preferences Form -->
+                    <div id="step1" class="step-content active">
+                        <div class="form-card">
+                            <h3><i class="fas fa-sliders-h"></i> Set Your Preferences</h3>
+                            <form id="preferencesForm">
+                                <div class="form-group">
+                                    <label>Lot Type</label>
+                                    <select id="prefLotType" required>
+                                        <option value="">Select lot type</option>
+                                        <option value="Lawn Lot">Lawn Lot</option>
+                                        <option value="Family Lot">Family Lot</option>
+                                        <option value="Mausoleum">Mausoleum</option>
+                                        <option value="Cremation Niche">Cremation Niche</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Budget Range: $<span id="budgetValue">10000</span></label>
+                                    <input type="range" id="prefBudget" min="2000" max="30000" step="500" value="10000">
+                                </div>
+                                <div class="form-group">
+                                    <label>Preferred Section (optional)</label>
+                                    <select id="prefSection">
+                                        <option value="">Any section</option>
+                                        <option value="Section A">Section A</option>
+                                        <option value="Section B">Section B</option>
+                                        <option value="Section C">Section C</option>
+                                        <option value="Section D">Section D</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Desired Burial Date</label>
+                                    <input type="date" id="prefDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Additional Requirements (e.g., near water feature, shaded area)</label>
+                                    <textarea id="prefNotes" rows="3" placeholder="Optional"></textarea>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-next">Get AI Recommendations →</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: AI Recommendations -->
+                    <div id="step2" class="step-content">
+                        <div class="form-card">
+                            <h3><i class="fas fa-robot"></i> AI‑Powered Lot Recommendations</h3>
+                            <div id="recommendationsList" class="recommendations-grid">
+                                <!-- dynamically loaded recommendations -->
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn-back" data-back="1">← Back to Preferences</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Confirmation -->
+                    <div id="step3" class="step-content">
+                        <div class="form-card">
+                            <h3><i class="fas fa-check-circle"></i> Confirm Booking</h3>
+                            <div id="confirmationDetails"></div>
+                            <div class="form-actions">
+                                <button class="btn-back" data-back="2">← Back</button>
+                                <button id="confirmBooking" class="btn-confirm">Confirm & Save Schedule</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/burial-scheduling.js"></script>
+    <script>
+        // Sidebar toggle
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const sidebar = document.querySelector('.sidebar');
+        if (toggleBtn && sidebar) {
+            toggleBtn.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
+        }
+    </script>
+</body>
+</html>

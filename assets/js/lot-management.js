@@ -1,37 +1,11 @@
-﻿// lot-management.js
+﻿// lot-management.js – temporary in-memory storage (resets on refresh)
 document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.querySelector('.sidebar');
-    ['toggleSidebar', 'menuToggle'].forEach(id => {
-        const toggleBtn = document.getElementById(id);
-        if (toggleBtn && sidebar) {
-            toggleBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('collapsed');
-            });
-        }
-    });
-
-    const sidebarContainer = document.getElementById('sidebarContainer');
-    if (sidebarContainer) {
-        fetch('../assets/includes/sidebar-admin.html')
-            .then(response => response.text())
-            .then(html => {
-                sidebarContainer.innerHTML = html;
-                const currentPage = window.location.pathname.split('/').pop();
-                document.querySelectorAll('.sidebar-nav a').forEach(link => {
-                    if (link.getAttribute('href') === currentPage) {
-                        link.classList.add('active');
-                    }
-                });
-            })
-            .catch(err => console.error('Sidebar load error:', err));
-    }
-
+    // ---------- SESSION & AUTH ----------
     const session = JSON.parse(localStorage.getItem('cemetery_session'));
     if (!session || !session.userId) {
         window.location.href = 'login.html';
         return;
     }
-
     document.getElementById('userName').innerText = session.fullName || session.username;
     document.getElementById('userRole').innerText = session.role === 'admin' ? 'Administrator' : 'Staff';
     document.getElementById('sidebarUserName').innerText = session.fullName || session.username;
@@ -39,13 +13,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (session.role !== 'admin') {
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
     }
-
     document.getElementById('logoutBtn').addEventListener('click', () => {
         localStorage.removeItem('cemetery_session');
         window.location.href = 'login.html';
     });
 
-    // Temporary in-memory lot data (resets on refresh)
+    // ---------- TEMPORARY LOT DATA (in-memory, resets on refresh) ----------
     let lots = [
         { id: 1, lotNumber: 'A-001', section: 'Section A', block: 'Block 1', type: 'Lawn Lot', price: 5500, status: 'Available', notes: 'Near chapel' },
         { id: 2, lotNumber: 'A-002', section: 'Section A', block: 'Block 1', type: 'Lawn Lot', price: 5800, status: 'Occupied', notes: 'Leased until 2030' },
@@ -63,17 +36,15 @@ document.addEventListener('DOMContentLoaded', function() {
         renderTabs();
         renderGrid();
     }
-
     function updateStats() {
-        document.getElementById('availableCount').innerText = lots.filter(lot => lot.status === 'Available').length;
-        document.getElementById('occupiedCount').innerText = lots.filter(lot => lot.status === 'Occupied').length;
-        document.getElementById('reservedCount').innerText = lots.filter(lot => lot.status === 'Reserved').length;
+        document.getElementById('availableCount').innerText = lots.filter(l => l.status === 'Available').length;
+        document.getElementById('occupiedCount').innerText = lots.filter(l => l.status === 'Occupied').length;
+        document.getElementById('reservedCount').innerText = lots.filter(l => l.status === 'Reserved').length;
         document.getElementById('totalCount').innerText = lots.length;
     }
-
     function renderTabs() {
         const container = document.getElementById('sectionTabs');
-        container.innerHTML = sections.map(section => `<button class="tab-btn ${section === currentSection ? 'active' : ''}" data-section="${section}">${section}</button>`).join('');
+        container.innerHTML = sections.map(s => `<button class="tab-btn ${s === currentSection ? 'active' : ''}" data-section="${s}">${s}</button>`).join('');
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 currentSection = btn.dataset.section;
@@ -82,12 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-
     function renderGrid() {
         const grid = document.getElementById('lotGrid');
-        const filtered = lots.filter(lot => lot.section === currentSection);
+        const filtered = lots.filter(l => l.section === currentSection);
         if (filtered.length === 0) {
-            grid.innerHTML = '<div class="no-lots">No lots in this section. Click "Add New Lot" to add a record.</div>';
+            grid.innerHTML = '<div class="no-lots">No lots in this section. Click "Add New Lot" to add.</div>';
             return;
         }
         grid.innerHTML = filtered.map(lot => `
@@ -99,12 +69,11 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `).join('');
         document.querySelectorAll('.lot-card').forEach(card => {
-            card.addEventListener('click', () => showViewModal(Number(card.dataset.id)));
+            card.addEventListener('click', () => showViewModal(parseInt(card.dataset.id)));
         });
     }
-
     function showViewModal(id) {
-        const lot = lots.find(item => item.id === id);
+        const lot = lots.find(l => l.id === id);
         if (!lot) return;
         document.getElementById('viewDetails').innerHTML = `
             <div class="detail-row"><span>Lot Number</span><strong>${lot.lotNumber}</strong></div>
@@ -130,14 +99,13 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('editFromView').parentNode.insertBefore(deleteBtn, document.getElementById('editFromView').nextSibling);
         }
         deleteBtn.onclick = () => {
-            if (confirm(`Delete lot ${lot.lotNumber}? This action is temporary and will revert on page refresh.`)) {
-                lots = lots.filter(item => item.id !== lot.id);
+            if (confirm(`Delete lot ${lot.lotNumber}? This is temporary and will revert on refresh.`)) {
+                lots = lots.filter(l => l.id !== lot.id);
                 modal.style.display = 'none';
                 render();
             }
         };
     }
-
     function openAddModal() {
         document.getElementById('modalTitle').innerText = 'Add New Lot';
         document.getElementById('lotForm').reset();
@@ -145,9 +113,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('lotSection').value = currentSection;
         document.getElementById('lotModal').style.display = 'flex';
     }
-
     function openEditModal(id) {
-        const lot = lots.find(item => item.id === id);
+        const lot = lots.find(l => l.id === id);
         if (!lot) return;
         document.getElementById('modalTitle').innerText = 'Edit Lot';
         document.getElementById('lotId').value = lot.id;
@@ -160,7 +127,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('lotNotes').value = lot.notes || '';
         document.getElementById('lotModal').style.display = 'flex';
     }
-
     function saveLot(event) {
         event.preventDefault();
         const idValue = document.getElementById('lotId').value;
@@ -174,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
             notes: document.getElementById('lotNotes').value.trim(),
         };
         if (idValue) {
-            const index = lots.findIndex(item => item.id === Number(idValue));
+            const index = lots.findIndex(l => l.id === Number(idValue));
             if (index !== -1) lots[index] = { ...lots[index], ...newLot };
         } else {
             lots.push({ id: nextId++, ...newLot });
@@ -182,14 +148,13 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('lotModal').style.display = 'none';
         render();
     }
-
     document.getElementById('openAddLotModal').addEventListener('click', openAddModal);
     document.getElementById('lotForm').addEventListener('submit', saveLot);
     document.querySelector('.close').addEventListener('click', () => document.getElementById('lotModal').style.display = 'none');
     document.querySelector('.close-view').addEventListener('click', () => document.getElementById('viewModal').style.display = 'none');
-    window.addEventListener('click', (event) => {
-        if (event.target === document.getElementById('lotModal')) document.getElementById('lotModal').style.display = 'none';
-        if (event.target === document.getElementById('viewModal')) document.getElementById('viewModal').style.display = 'none';
+    window.addEventListener('click', (e) => {
+        if (e.target === document.getElementById('lotModal')) document.getElementById('lotModal').style.display = 'none';
+        if (e.target === document.getElementById('viewModal')) document.getElementById('viewModal').style.display = 'none';
     });
     render();
 });
