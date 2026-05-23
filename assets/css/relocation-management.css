@@ -1,6 +1,6 @@
 /* ============================================
-   DECEDENT RECORDS MODULE STYLES
-   Sidebar matches dashboard – no internal scroll
+   RELOCATION & EXHUMATION MODULE STYLES
+   Sidebar matches dashboard – fixed, no internal scroll
    ============================================ */
 
 .dashboard-body {
@@ -21,7 +21,7 @@
     color: #fff;
     position: fixed;
     height: 100vh;
-    overflow-y: visible;               /* no scrollbar inside sidebar */
+    overflow-y: visible;
     padding-top: 0;
     box-shadow: 0 6px 18px rgba(16,24,40,0.06);
     transition: transform 220ms ease;
@@ -32,7 +32,6 @@
 
 .sidebar-header {
     padding: 12px 16px;
-    text-align: left;
     border-bottom: 1px solid rgba(255,255,255,0.04);
     flex-shrink: 0;
 }
@@ -86,7 +85,6 @@
 }
 
 .nav-item span:not(.icon) {
-    text-align: left;
     font-size: 0.9rem;
 }
 
@@ -149,7 +147,7 @@
     font-size: 0.7rem;
 }
 
-/* ---------- MAIN CONTENT AREA ---------- */
+/* ---------- MAIN CONTENT ---------- */
 .main-content {
     margin-left: 260px;
     flex: 1;
@@ -272,56 +270,7 @@
     padding: 20px;
 }
 
-/* ---------- MODULE SPECIFIC STYLES (decedent records) ---------- */
-.records-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.search-box {
-    position: relative;
-    flex: 1;
-    max-width: 350px;
-}
-
-.search-box i {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #9aaeb7;
-}
-
-.search-box input {
-    width: 100%;
-    padding: 10px 12px 10px 36px;
-    border: 1px solid #e2e8f0;
-    border-radius: 30px;
-    font-family: inherit;
-    font-size: 0.9rem;
-}
-
-.btn-add {
-    background: #2c5e47;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 40px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-}
-
-.btn-add:hover {
-    background: #1f4538;
-}
-
+/* ---------- MODULE SPECIFIC STYLES ---------- */
 .stats-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -353,10 +302,26 @@
     font-size: 0.75rem;
 }
 
+.btn-add {
+    background: #2c5e47;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-add:hover {
+    background: #1f4538;
+}
+
 .table-container {
     background: white;
     border-radius: 16px;
     overflow-x: auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 }
 
 .data-table {
@@ -378,31 +343,57 @@
     font-weight: 600;
 }
 
+.data-table tr:hover {
+    background: #fafdfb;
+}
+
+/* Status badges */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #fff3e3;
+    color: #b45309;
+}
+
+.status-approved {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.status-completed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-denied {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Action buttons */
 .action-buttons {
     display: flex;
     gap: 8px;
 }
 
-.btn-view,
-.btn-edit-row,
-.btn-delete-row {
+.btn-view-request {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 1rem;
     padding: 4px 6px;
-}
-
-.btn-view {
+    border-radius: 6px;
     color: #2c5e47;
 }
 
-.btn-edit-row {
-    color: #eab308;
-}
-
-.btn-delete-row {
-    color: #dc2626;
+.btn-view-request:hover {
+    background: #eef5f2;
 }
 
 /* ---------- MODALS ---------- */
@@ -423,7 +414,7 @@
     background: white;
     border-radius: 24px;
     padding: 1.5rem;
-    max-width: 650px;
+    max-width: 550px;
     width: 90%;
     max-height: 85vh;
     overflow-y: auto;
@@ -437,14 +428,14 @@
 }
 
 .form-group {
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
 }
 
 .form-group label {
     display: block;
     font-weight: 600;
-    margin-bottom: 4px;
     font-size: 0.85rem;
+    margin-bottom: 4px;
     color: #2d3e3a;
 }
 
@@ -470,14 +461,42 @@
     margin-top: 0.8rem;
 }
 
+.modal-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1rem;
+}
+
+.btn-approve,
+.btn-complete,
+.btn-deny,
 .btn-edit {
+    padding: 6px 14px;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-approve {
     background: #2c5e47;
     color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 40px;
-    cursor: pointer;
-    margin-top: 1rem;
+}
+
+.btn-complete {
+    background: #7aa77a;
+    color: white;
+}
+
+.btn-deny {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-edit {
+    background: #eab308;
+    color: white;
 }
 
 .detail-row {
@@ -522,11 +541,7 @@
     .stats-row {
         grid-template-columns: 1fr;
     }
-    .records-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .search-box {
-        max-width: none;
+    .table-container {
+        overflow-x: scroll;
     }
 }

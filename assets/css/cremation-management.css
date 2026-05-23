@@ -1,5 +1,5 @@
 /* ============================================
-   DECEDENT RECORDS MODULE STYLES
+   CREMATION MANAGEMENT MODULE STYLES
    Sidebar matches dashboard – no internal scroll
    ============================================ */
 
@@ -21,10 +21,8 @@
     color: #fff;
     position: fixed;
     height: 100vh;
-    overflow-y: visible;               /* no scrollbar inside sidebar */
+    overflow-y: visible;
     padding-top: 0;
-    box-shadow: 0 6px 18px rgba(16,24,40,0.06);
-    transition: transform 220ms ease;
     display: flex;
     flex-direction: column;
     z-index: 100;
@@ -32,7 +30,6 @@
 
 .sidebar-header {
     padding: 12px 16px;
-    text-align: left;
     border-bottom: 1px solid rgba(255,255,255,0.04);
     flex-shrink: 0;
 }
@@ -74,19 +71,15 @@
     color: #d6def3;
     border-radius: 8px;
     margin: 0;
-    cursor: pointer;
-    transition: all 0.16s ease;
 }
 
 .nav-item .icon {
     font-size: 1.1rem;
     width: 22px;
     text-align: center;
-    flex-shrink: 0;
 }
 
 .nav-item span:not(.icon) {
-    text-align: left;
     font-size: 0.9rem;
 }
 
@@ -115,30 +108,20 @@
     display: flex;
     gap: 10px;
     align-items: center;
-    cursor: pointer;
     padding: 6px 10px;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-
-.user-chip:hover {
-    background: rgba(255,255,255,0.05);
 }
 
 .user-chip i {
     font-size: 1.5rem;
     color: #7aa77a;
-    flex-shrink: 0;
 }
 
 .user-chip div {
     display: flex;
     flex-direction: column;
-    text-align: left;
 }
 
 .user-chip span {
-    display: block;
     font-weight: 600;
     font-size: 0.85rem;
     color: #fff;
@@ -149,7 +132,7 @@
     font-size: 0.7rem;
 }
 
-/* ---------- MAIN CONTENT AREA ---------- */
+/* ---------- MAIN CONTENT ---------- */
 .main-content {
     margin-left: 260px;
     flex: 1;
@@ -172,7 +155,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .top-left {
@@ -187,12 +169,6 @@
     font-size: 1.2rem;
     cursor: pointer;
     color: #2b3658;
-    padding: 4px 6px;
-    border-radius: 6px;
-}
-
-.hamburger:hover {
-    background: rgba(0,0,0,0.05);
 }
 
 .user-info {
@@ -221,7 +197,6 @@
     align-items: center;
     justify-content: center;
     font-size: 0.65rem;
-    font-weight: bold;
 }
 
 .profile {
@@ -244,13 +219,11 @@
 .profile-text {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
 }
 
 .user-name {
     font-weight: 700;
     font-size: 0.9rem;
-    margin-bottom: 2px;
 }
 
 .user-role {
@@ -272,56 +245,7 @@
     padding: 20px;
 }
 
-/* ---------- MODULE SPECIFIC STYLES (decedent records) ---------- */
-.records-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.search-box {
-    position: relative;
-    flex: 1;
-    max-width: 350px;
-}
-
-.search-box i {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #9aaeb7;
-}
-
-.search-box input {
-    width: 100%;
-    padding: 10px 12px 10px 36px;
-    border: 1px solid #e2e8f0;
-    border-radius: 30px;
-    font-family: inherit;
-    font-size: 0.9rem;
-}
-
-.btn-add {
-    background: #2c5e47;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 40px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-}
-
-.btn-add:hover {
-    background: #1f4538;
-}
-
+/* ---------- CREMATION MANAGEMENT SPECIFIC ---------- */
 .stats-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -333,7 +257,6 @@
     background: #fff;
     border-radius: 12px;
     padding: 16px;
-    box-shadow: 0 10px 24px rgba(19,24,33,0.04);
 }
 
 .stat-title {
@@ -344,65 +267,78 @@
 .stat-value {
     font-size: 1.6rem;
     font-weight: 800;
-    margin-top: 6px;
 }
 
 .stat-sub {
     color: #7a8b82;
-    margin-top: 4px;
     font-size: 0.75rem;
 }
 
-.table-container {
-    background: white;
-    border-radius: 16px;
-    overflow-x: auto;
-}
-
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
-}
-
-.data-table th,
-.data-table td {
-    padding: 12px 10px;
-    text-align: left;
-    border-bottom: 1px solid #edf2f7;
-}
-
-.data-table th {
-    background: #f8fafc;
-    color: #2d3e3a;
+.btn-add {
+    background: #2c5e47;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 40px;
+    cursor: pointer;
     font-weight: 600;
 }
 
-.action-buttons {
-    display: flex;
-    gap: 8px;
+.columbarium-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 16px;
 }
 
-.btn-view,
-.btn-edit-row,
-.btn-delete-row {
-    background: none;
-    border: none;
+.niche-card {
+    background: white;
+    border-radius: 16px;
+    padding: 12px;
+    border: 1px solid #edf2f7;
     cursor: pointer;
-    font-size: 0.9rem;
-    padding: 4px 6px;
+    text-align: center;
 }
 
-.btn-view {
+.niche-card:hover {
+    transform: translateY(-2px);
+}
+
+.niche-number {
+    font-weight: 800;
+    font-size: 1rem;
+    color: #1e2f2a;
+}
+
+.niche-location {
+    font-size: 0.75rem;
+    color: #6c867c;
+    margin: 4px 0;
+}
+
+.niche-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-top: 6px;
+}
+
+.status-occupied {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-available {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.deceased-name {
+    margin-top: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: #2c5e47;
-}
-
-.btn-edit-row {
-    color: #eab308;
-}
-
-.btn-delete-row {
-    color: #dc2626;
 }
 
 /* ---------- MODALS ---------- */
@@ -423,10 +359,8 @@
     background: white;
     border-radius: 24px;
     padding: 1.5rem;
-    max-width: 650px;
+    max-width: 550px;
     width: 90%;
-    max-height: 85vh;
-    overflow-y: auto;
 }
 
 .close,
@@ -443,8 +377,8 @@
 .form-group label {
     display: block;
     font-weight: 600;
-    margin-bottom: 4px;
     font-size: 0.85rem;
+    margin-bottom: 4px;
     color: #2d3e3a;
 }
 
@@ -470,14 +404,25 @@
     margin-top: 0.8rem;
 }
 
-.btn-edit {
+.btn-edit,
+.btn-assign {
     background: #2c5e47;
     color: white;
     border: none;
-    padding: 8px 16px;
+    padding: 6px 14px;
     border-radius: 40px;
     cursor: pointer;
-    margin-top: 1rem;
+    margin-top: 0.8rem;
+    margin-right: 6px;
+}
+
+.btn-delete {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 40px;
+    cursor: pointer;
 }
 
 .detail-row {
@@ -522,11 +467,7 @@
     .stats-row {
         grid-template-columns: 1fr;
     }
-    .records-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .search-box {
-        max-width: none;
+    .columbarium-grid {
+        grid-template-columns: 1fr;
     }
 }
